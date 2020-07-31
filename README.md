@@ -1,14 +1,16 @@
-<p align="center">
-  <img src="https://i.imgur.com/8aQf6On.png" />
-</p>
+<p align="center"><img src="https://i.imgur.com/8aQf6On.png" /></p>
 
 # Unicaps
-[![](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8%20-blue.svg)](https://www.python.org/downloads/release/python-3611/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/unicaps.svg)](https://pypi.python.org/pypi/unicaps/)
+[![PyPI version fury.io](https://badge.fury.io/py/unicaps.svg)](https://pypi.python.org/pypi/unicaps/)
+[![PyPI status](https://img.shields.io/pypi/status/unicaps.svg)](https://pypi.python.org/pypi/unicaps/)
+[![codecov](https://codecov.io/gh/sergey-scat/unicaps/branch/master/graph/badge.svg)](https://codecov.io/gh/sergey-scat/unicaps)
+[![Documentation Status](https://readthedocs.org/projects/unicaps/badge/?version=latest)](https://unicaps.readthedocs.io/en/latest/?badge=latest)
 
 Unicaps is a unified Python API for CAPTCHA solving services.
 
 
-⚠ **PLEASE NOTE**</br>
+⚠ **PLEASE NOTE** </br>
 ⚠ A solving service API key is required to use this package!</br>
 ⚠ The list of the supported services you can find in the table below.
 

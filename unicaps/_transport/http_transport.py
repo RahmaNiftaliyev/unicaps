@@ -72,11 +72,7 @@ class StandardHTTPTransport(BaseTransport):  # pylint: disable=too-few-public-me
         return response
 
 
-class HTTPRequest(BaseRequest):  # pylint: disable=too-few-public-methods
-    """ HTTP Request placeholder """
-
-
-class HTTPRequestJSON(HTTPRequest):
+class HTTPRequestJSON(BaseRequest):
     """ HTTP Request that returns JSON response """
 
     def prepare(self) -> dict:

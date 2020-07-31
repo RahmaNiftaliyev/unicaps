@@ -10,8 +10,7 @@ from datetime import datetime
 from inspect import getmodule
 from typing import Dict, Optional, Tuple
 
-from .._transport.http_transport import StandardHTTPTransport  # type: ignore
-from .._transport.socket_transport import StandardSocketTransport  # type: ignore
+from .._transport import StandardHTTPTransport, StandardSocketTransport  # type: ignore
 from .._captcha import CaptchaType
 from .._captcha.base import BaseCaptcha, BaseCaptchaSolution
 from .._misc.proxy import ProxyServer

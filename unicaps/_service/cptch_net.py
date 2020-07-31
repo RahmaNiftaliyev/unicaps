@@ -6,7 +6,7 @@ cptch.net service
 import time
 
 from .base import HTTPService
-from .._transport.http_transport import HTTPRequestJSON  # type: ignore
+from .._transport import HTTPRequestJSON  # type: ignore
 from .. import exceptions
 from .._captcha import CaptchaType
 from ..common import CaptchaAlphabet
@@ -222,6 +222,7 @@ class SolutionRequest(ResRequest):
         """ Prepare request """
 
         # save task
+        # pylint: disable=attribute-defined-outside-init
         self._task = task
 
         request = super().prepare()
@@ -287,7 +288,7 @@ class ImageCaptchaSolutionRequest(SolutionRequest):
 class RecaptchaV2TaskRequest(TaskRequest):
     """ reCAPTCHA v2 task request """
 
-    # pylint: disable=arguments-differ,signature-differs
+    # pylint: disable=arguments-differ,signature-differs,unused-argument
     def prepare(self, captcha, proxy, user_agent, cookies) -> dict:  # type: ignore
         """ Prepare request """
 
@@ -318,7 +319,7 @@ class RecaptchaV2SolutionRequest(SolutionRequest):
 class RecaptchaV3TaskRequest(TaskRequest):
     """ reCAPTCHA v3 task request """
 
-    # pylint: disable=arguments-differ,signature-differs
+    # pylint: disable=arguments-differ,signature-differs,unused-argument
     def prepare(self, captcha, proxy, user_agent, cookies) -> dict:  # type: ignore
         """ Prepare request """
 

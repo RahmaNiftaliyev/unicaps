@@ -1,2 +1,10 @@
-pytest
-tox
+codecov>=2.1.8
+coverage>=5.2.1
+flake8>=3.8.3
+mypy>=0.770
+pbr>=5.4.5
+pycodestyle>=2.6.0
+pylint>=2.5.2
+pytest>=6.0.1
+pytest-cov>=2.10.0
+tox>=3.17.1

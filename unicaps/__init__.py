@@ -5,5 +5,5 @@ Unicaps package
 """
 
 # pylint: disable=unused-import,import-error
-from ._solver import CaptchaSolver
 from ._service import CaptchaSolvingService
+from ._solver import CaptchaSolver

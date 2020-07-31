@@ -1,0 +1,55 @@
+dist: xenial
+language: python
+branches:
+  only:
+    - master
+    - /^\d\.\d+$/
+    - /^\d\.\d+\.\d+(rc\d+|\.dev\d+)?$/
+    - CICD
+matrix:
+  include:
+    - stage: Lint and Code Style
+      python: 3.8
+      env: TOXENV=pycodestyle
+    - python: 3.8
+      env: TOXENV=flake8-check
+    - python: 3.8
+      env: TOXENV=pylint-check
+    - python: 3.8
+      env: TOXENV=mypy-check
+
+    - stage: Tests (Python 3.8)
+      python: 3.8
+      env: TOXENV=py38
+
+    - stage: Tests (Python 3.7)
+      python: 3.7
+      env: TOXENV=py37
+
+    - stage: Tests (Python 3.6)
+      python: 3.6
+      env: TOXENV=py36
+install:
+  - |
+      if [[ ! -z "$PYPY_VERSION" ]]; then
+        export PYPY_VERSION="pypy$PYPY_VERSION-linux64"
+        wget "https://bitbucket.org/pypy/pypy/downloads/${PYPY_VERSION}.tar.bz2"
+        tar -jxf ${PYPY_VERSION}.tar.bz2
+        virtualenv --python="$PYPY_VERSION/bin/pypy3" "$HOME/virtualenvs/$PYPY_VERSION"
+        source "$HOME/virtualenvs/$PYPY_VERSION/bin/activate"
+      fi
+  - pip install -U tox twine wheel codecov
+script:
+  - tox
+after_success:
+  - codecov
+deploy:
+  provider: pypi
+  distributions: "sdist bdist_wheel"
+  user: 
+  password:
+    secure: 
+  on:
+    tags: true
+    repo: sergey-scat/unicaps
+    condition: "$PYPI_RELEASE_JOB == true && $TRAVIS_TAG =~ ^[0-9]+[.][0-9]+[.][0-9]+(rc[0-9]+|[.]dev[0-9]+)?$"

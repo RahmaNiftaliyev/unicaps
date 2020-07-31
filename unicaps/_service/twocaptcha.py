@@ -7,7 +7,7 @@ import json
 import time
 
 from .base import HTTPService
-from .._transport.http_transport import HTTPRequestJSON  # type: ignore
+from .._transport import HTTPRequestJSON  # type: ignore
 from .. import exceptions
 from .._captcha import CaptchaType
 from ..common import CaptchaAlphabet
@@ -241,6 +241,7 @@ class SolutionRequest(ResRequest):
         """ Prepare request """
 
         # save task
+        # pylint: disable=attribute-defined-outside-init
         self._task = task
 
         request = super().prepare()

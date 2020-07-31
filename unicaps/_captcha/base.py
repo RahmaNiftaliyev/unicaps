@@ -54,8 +54,9 @@ class BaseCaptcha(ABC):
 
         if not kwargs:
             # get all optional params
+            # pylint: disable=no-member
             kwargs = {
-                k: (k, None) for k, v in self.__dataclass_fields__.items()
+                k: (k, None) for k, v in self.__dataclass_fields__.items()  # type: ignore
                 if v.default is not MISSING
             }
 
@@ -86,4 +87,6 @@ class BaseCaptchaSolution(ABC):
         return getattr(importlib.import_module(cls.__module__), cls.__name__.split("Solution")[0])
 
     def __str__(self):
+        # pylint: disable=no-member
+        # type: ignore
         return '\n'.join([getattr(self, field) for field in self.__dataclass_fields__])
