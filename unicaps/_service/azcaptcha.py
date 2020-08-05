@@ -3,8 +3,6 @@
 azcaptcha.com service
 """
 
-import time
-
 from .base import HTTPService
 from .._transport import HTTPRequestJSON  # type: ignore
 from .. import exceptions
