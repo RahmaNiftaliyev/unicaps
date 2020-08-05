@@ -14,10 +14,12 @@ class Capy(BaseCaptcha):
 
     site_key: str
     page_url: str
+    api_server: str
 
     def __post_init__(self):
         assert isinstance(self.site_key, str)
         assert isinstance(self.page_url, str)
+        assert isinstance(self.api_server, str)
 
 
 @dataclass

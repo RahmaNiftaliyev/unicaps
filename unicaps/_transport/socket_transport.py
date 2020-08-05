@@ -57,7 +57,7 @@ class StandardSocketTransport(BaseTransport):
                 return str(response.rstrip(self.LINE_TERMINATOR), 'utf-8')
         raise ServiceError('send/recv timed out')
 
-    def _make_request(self, request_data: dict) -> Dict:
+    def _make_request(self, request_data: dict) -> dict:
         if not self._socket:
             self.connect()
         return self._sendrecv(request_data)

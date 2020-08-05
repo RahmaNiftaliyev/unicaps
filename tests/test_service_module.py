@@ -29,7 +29,9 @@ SERVICE_MODULES_FOR_TEST = {
                      CaptchaType.FUNCAPTCHA, CaptchaType.GEETEST, CaptchaType.HCAPTCHA),
     'twocaptcha': CaptchaType,
     'rucaptcha': CaptchaType,
-    # 'deathbycaptcha': (CaptchaType.RECAPTCHAV2,)
+    'azcaptcha': (CaptchaType.IMAGE, CaptchaType.RECAPTCHAV2, CaptchaType.RECAPTCHAV3),
+    'cptch_net': (CaptchaType.IMAGE, CaptchaType.RECAPTCHAV2, CaptchaType.RECAPTCHAV3),
+    'deathbycaptcha': (CaptchaType.RECAPTCHAV2,)
 }
 BASE_REQUESTS = ('GetBalance', 'GetStatus', 'ReportGood', 'ReportBad')
 TASK_REQUEST_PREPARE_PARAMS = ('self', 'captcha', 'proxy', 'user_agent', 'cookies')
@@ -42,7 +44,7 @@ def service_module(request):
     return importlib.import_module('unicaps._service.' + request.param)
 
 
-@pytest.fixture(scope="module")  # , params=SERVICE_MODULES_FOR_TEST)
+@pytest.fixture(scope="module")
 def service_instance(service_module):
     return getattr(service_module, "Service")("test")
 
@@ -173,11 +175,13 @@ def test_captcha_request_signature_of_parse_response_func(service_module, captch
     <captcha>SolutionRequest.parse_response() functions.
     """
 
-    if is_captcha_supported(service_module, captcha_type):
-        request_name, request_class = get_request(service_module, captcha_type, req_type)
-        params = tuple(inspect.signature(request_class.parse_response).parameters)
-        assert params == REQUEST_PARSE_RESPONSE_PARAMS, \
-               f"Incorrect signature of {request_name}.parse_response() func: {', '.join(params)}"
+    if not is_captcha_supported(service_module, captcha_type):
+        pytest.skip("CAPTCHA is not supported!")
+
+    request_name, request_class = get_request(service_module, captcha_type, req_type)
+    params = tuple(inspect.signature(request_class.parse_response).parameters)
+    assert params == REQUEST_PARSE_RESPONSE_PARAMS, \
+           f"Incorrect signature of {request_name}.parse_response() func: {', '.join(params)}"
 
 
 @pytest.mark.parametrize("test_id,input_data", INPUT_TEST_DATA_FOR_TASK_PREPARE_FUNC.items())
@@ -186,7 +190,7 @@ def test_task_request_return_value_of_prepare_func(service_module, test_id, inpu
     captcha_type = input_data[0].get_type()
 
     if not is_captcha_supported(service_module, captcha_type):
-        return
+        pytest.skip("CAPTCHA is not supported!")
 
     request_name, request_class = get_request(service_module, captcha_type, 'TaskRequest')
 
@@ -209,7 +213,7 @@ def test_task_request_return_value_of_parse_response_func(service_module, test_i
     service_type = {v: k for k, v in SOLVING_SERVICE.items()}[service_module]
 
     if not is_captcha_supported(service_module, captcha_type):
-        return
+        pytest.skip("CAPTCHA is not supported!")
 
     request_name, request_class = get_request(service_module, captcha_type, 'TaskRequest')
 
@@ -226,26 +230,32 @@ def test_task_request_return_value_of_parse_response_func(service_module, test_i
     assert result_dict == standard_result
 
 
-@pytest.mark.parametrize("test_id,captcha_type",
-                         INPUT_TEST_LIST_FOR_TASK_PARSE_RESPONSE_FUNC.items())
-def test_task_request_exception_of_parse_response_func(service_module, test_id, captcha_type):
+@pytest.mark.parametrize("test_id,captcha_type,exc_type",
+                         [(i,c,e) for i, e in
+                          OUTPUT_TEST_DATA_FOR_TASK_PARSE_RESPONSE_FUNC_WITH_EXC.items()
+                          for c in CaptchaType])
+def test_task_request_exception_of_parse_response_func(service_module, test_id, captcha_type,
+                                                       exc_type):
     service_type = {v: k for k, v in SOLVING_SERVICE.items()}[service_module]
 
     if not is_captcha_supported(service_module, captcha_type):
-        return
+        pytest.skip("CAPTCHA is not supported!")
 
     request_name, request_class = get_request(service_module, captcha_type, 'TaskRequest')
 
     # service instance
     service = service_module.Service('test')
 
+    # get input data, skip test 
     input_data = INPUT_TEST_DATA_FOR_TASK_PARSE_RESPONSE_FUNC_WITH_EXC[service_type][test_id]
+    if not input_data:
+        pytest.skip("The service doesn't support the testing exception!")
 
     # request instance
     request_instance = request_class(service)
 
     expected_exception = (
-        OUTPUT_TEST_DATA_FOR_TASK_PARSE_RESPONSE_FUNC_WITH_EXC[service_type][test_id]
+        OUTPUT_TEST_DATA_FOR_TASK_PARSE_RESPONSE_FUNC_WITH_EXC[test_id]
     )
     with pytest.raises(expected_exception):
         request_instance.parse_response(input_data)

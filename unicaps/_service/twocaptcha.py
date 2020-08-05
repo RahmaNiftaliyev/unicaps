@@ -75,7 +75,7 @@ class Request(HTTPRequestJSON):
         elif error in ('ERROR_NO_SLOT_AVAILABLE',):
             # If server returns ERROR_NO_SLOT_AVAILABLE make a 5 seconds timeout before sending
             # next request.
-            time.sleep(5)
+            # time.sleep(5)
             raise exceptions.ServiceTooBusy(error_msg)
         elif error in ('MAX_USER_TURN',) or error.startswith('ERROR:'):
             raise exceptions.TooManyRequestsError(error_msg)
@@ -396,15 +396,15 @@ class TextCaptchaTaskRequest(TaskRequest):
         request['data'].update(
             dict(
                 textcaptcha=captcha.text,
-                # language=captcha.alphabet,
-                # lang=captcha.language
             )
         )
 
         # add optional params
         request['data'].update(
             captcha.get_optional_data(
-                alphabet=('language', lambda v: v.value),
+                alphabet=('language',
+                          lambda v: {CaptchaAlphabet.CYRILLIC: 1,
+                                     CaptchaAlphabet.LATIN: 2}.get(v, 0)),
                 language=('lang', lambda v: v.value)
             )
         )
@@ -488,8 +488,14 @@ class GeeTestTaskRequest(TaskRequest):
                 method="geetest",
                 gt=captcha.gt_key,
                 challenge=captcha.challenge,
-                api_server=captcha.api_server,
                 pageurl=captcha.page_url
+            )
+        )
+
+        # add optional params
+        request['data'].update(
+            captcha.get_optional_data(
+                api_server=('api_server', None),
             )
         )
 
@@ -535,6 +541,7 @@ class CapyTaskRequest(TaskRequest):
             dict(
                 method="capy",
                 captchakey=captcha.site_key,
+                api_server=captcha.api_server,
                 pageurl=captcha.page_url
             )
         )

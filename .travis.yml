@@ -2,53 +2,43 @@ dist: xenial
 language: python
 branches:
   only:
-    - master
-    - /^\d\.\d+$/
-    - /^\d\.\d+\.\d+(rc\d+|\.dev\d+)?$/
-    - CICD
+  - master
+  - "/^\\d\\.\\d+$/"
+  - "/^\\d\\.\\d+\\.\\d+(rc\\d+|\\.dev\\d+)?$/"
+  - CICD
 matrix:
   include:
-    - stage: Lint and Code Style
-      python: 3.8
-      env: TOXENV=pycodestyle
-    - python: 3.8
-      env: TOXENV=flake8-check
-    - python: 3.8
-      env: TOXENV=pylint-check
-    - python: 3.8
-      env: TOXENV=mypy-check
-
-    - stage: Tests (Python 3.8)
-      python: 3.8
-      env: TOXENV=py38
-
-    - stage: Tests (Python 3.7)
-      python: 3.7
-      env: TOXENV=py37
-
-    - stage: Tests (Python 3.6)
-      python: 3.6
-      env: TOXENV=py36
+  - stage: Lint and Code Style
+    python: 3.8
+    env: TOXENV=pycodestyle
+  - python: 3.8
+    env: TOXENV=flake8-check
+  - python: 3.8
+    env: TOXENV=pylint-check
+  - python: 3.8
+    env: TOXENV=mypy-check
+  - stage: Tests (Python 3.6)
+    python: 3.6
+    env: TOXENV=py36
+  - stage: Tests (Python 3.7)
+    python: 3.7
+    env: TOXENV=py37
+  - stage: Tests (Python 3.8)
+    python: 3.8
+    env: TOXENV=py38 PYPI_RELEASE_JOB=true
+    dist: bionic
 install:
-  - |
-      if [[ ! -z "$PYPY_VERSION" ]]; then
-        export PYPY_VERSION="pypy$PYPY_VERSION-linux64"
-        wget "https://bitbucket.org/pypy/pypy/downloads/${PYPY_VERSION}.tar.bz2"
-        tar -jxf ${PYPY_VERSION}.tar.bz2
-        virtualenv --python="$PYPY_VERSION/bin/pypy3" "$HOME/virtualenvs/$PYPY_VERSION"
-        source "$HOME/virtualenvs/$PYPY_VERSION/bin/activate"
-      fi
-  - pip install -U tox twine wheel codecov
+- pip install -U tox twine wheel codecov
 script:
-  - tox
+- tox
 after_success:
-  - codecov
+- codecov
 deploy:
   provider: pypi
-  distributions: "sdist bdist_wheel"
-  user: 
+  distributions: sdist bdist_wheel
+  user: "__token__"
   password:
-    secure: 
+    secure: "idtch+405hPkgBGEbGoJMF0WvBh+VQwPfS9MfM85zUzWjj/cAVqZE0ZqAGX6Ky56xirAj1wcOhAHLf80W33+PwkXTuJXSw+7JwxMKgMxLyG9ECFfHnM9aRxnw8CZTD/kyohenZx0hRPPYWgSFum4BIzhvM51g5gUwZlth1tN/PiM5m6BOFEjB9I7FafHI0H+1Rydl7Ly8zYOQfcfkX+Re/95AOk5Tj4BmFL8WegbdS8gSUNg5nglAr9qad9Wg+kon8dCNrJEmAYaqjH17JVCHTIYMjEsBI2bn2eicswO6A/qqTpFTmLMymtPqAY6BjX1Qnlz+jPZjwosf1DmPMmg7zFmaQzhhDCXj96aDOZLgmvhCNsw5Nr8cSURuDKo6IMCvpn4c/QPINHrDuZk2uunwF14HAo1wlIgCi1nGUIKxSrWZxlTSWHQN6E8kp7jNBwsPL+ZqBTNgiNC8r+ZY98p+3zc/9L+WPfs9lWepMd1jjDz6A+R4soPrVnnL0wwLFzFl5Vfr+aRr6EGex0CNreIPydkog0Y2C0SlX1Hfcvj67hhEtDmKQYrCM/2DKR6klRx7k/Q12hp33k3GEC9R5EH9pOJmV1bKoreGQABLCzD7posl7sJGUVco8uCJ6GUN5a8fZX5D/tEqmVr2GcF4qSPkudGZLRQKfXM2LCsa+E6k5U="
   on:
     tags: true
     repo: sergey-scat/unicaps

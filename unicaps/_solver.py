@@ -176,18 +176,19 @@ class CaptchaSolver:
         # )
         return self._solve_captcha(GeeTest, page_url, gt_key, challenge, **kwargs)
 
-    def solve_capy(self, site_key: str, page_url: str, **kwargs) -> SolvedCaptcha:
+    def solve_capy(self, site_key: str, page_url: str, api_server: str, **kwargs) -> SolvedCaptcha:
         r"""Solves Capy.
 
         :param site_key: Public website key (static).
         :param page_url: Full URL of the page with CAPTCHA.
+        :param api_server: The domain part of script URL you found on page.
         :param proxy: (optional) Proxy to use while solving the CAPTCHA.
         :param user_agent: (optional) User-Agent to use while solving the CAPTCHA.
         :param cookies: (optional) Cookies to use while solving the CAPTCHA.
         :return: :class:`SolvedCaptcha <SolvedCaptcha>` object
         :rtype: unicaps.SolvedCaptcha
         """
-        return self._solve_captcha(Capy, site_key, page_url, **kwargs)
+        return self._solve_captcha(Capy, site_key, page_url, api_server, **kwargs)
 
     def solve_tiktok(self, page_url: str, **kwargs) -> SolvedCaptcha:
         r"""Solves TikTokCaptcha.
