@@ -51,6 +51,21 @@ True
 | [deathbycaptcha.com](https://deathbycaptcha.com/) | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | [rucaptcha.com](https://rucaptcha.com?from=9863637) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
+### reCAPTCHA v2
+| Service | Regular | Invisible | Google service<sup>1</sup> | Proxy<sup>2</sup> | Cookies<sup>3</sup> | User-Agent<sup>4</sup> |
+| ------------- | :---: | :---:	| :---:	| :---:	| :---:	| :---:	|
+| [2captcha.com](http://2captcha.com/?from=8754088)	| ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| [anti-captcha.com](http://getcaptchasolution.com/vus77mnl48) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| [azcaptcha.com](https://azcaptcha.com/) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| [cptch.net](https://cptch.net/auth/signup?frm=0ebc1ab34eb04f67ac320f020a8f709f) | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| [deathbycaptcha.com](https://deathbycaptcha.com/) | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ |
+| [rucaptcha.com](https://rucaptcha.com?from=9863637) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+<sup>1</sup> Support of reCAPTCHA on Google services (e.g. Google Search)
+<sup>2</sup> Support of solving via proxy server
+<sup>3</sup> Support of passing custom cookies
+<sup>4</sup> Support of passing custom User-Agent header
+
 ## Supported CAPTCHAs / Services
 | Service➡ \ CAPTCHA⬇ | [2captcha.com](http://2captcha.com/?from=8754088) | [anti-captcha.com](http://getcaptchasolution.com/vus77mnl48) | [azcaptcha.com](https://azcaptcha.com/) | [cptch.net](https://cptch.net/auth/signup?frm=0ebc1ab34eb04f67ac320f020a8f709f) | [deathbycaptcha.com](https://deathbycaptcha.com/) | [rucaptcha.com](https://rucaptcha.com?from=9863637) |
 | ------------- | :---: | :---:	| :---:	| :---:	| :---:	| :---:	|
@@ -64,6 +79,8 @@ True
 | [hCaptcha](https://www.hcaptcha.com/) | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ |
 | [Capy](https://www.capy.me/) | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ |
 | TikTok | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ |
+
+
 
 ## Code examples
 [Examples](https://github.com/sergey-scat/unicaps/tree/master/examples)
